@@ -66,6 +66,17 @@ def MC_VaR(initial_investment, conf_level):
         print('--' * 35)
 
 
+def VaR_parametric_denoised(initial_investment, conf_level):
+    port_std = np.sqrt(weights.T.dot(cov_matrix_denoised)
+                       .dot(weights))
+    4
+    alpha = norm.ppf(1 - conf_level, stocks_returns_mean, port_std)
+    for i, j in zip(stocks.columns, range(len(stocks.columns))):
+        print("Parametric VaR result for {} is {} ".format(i, VaR_param))
+    VaR_params = (initial_investment - initial_investment * (1 + alpha))
+    print('--' * 25)
+    return VaR_params
+
 def ES_parametric(initial_investment, conf_level):
     alpha = - norm.ppf(1 - conf_level, stocks_returns_mean, port_std)
     for i, j in zip(stocks.columns, range(len(stocks.columns))):
