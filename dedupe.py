@@ -12,6 +12,7 @@ def dedupe_hashable(items):
             yield item
             seen.add(item)
 
+
 def dedupe_map(items, key=None):
     seen = set()
     for item in items:
@@ -19,4 +20,3 @@ def dedupe_map(items, key=None):
         if val not in seen:
             yield item
             seen.add(val)
-

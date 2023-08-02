@@ -1,16 +1,18 @@
-
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import datetime
-import yfinance as yf
-from scipy.stats import norm
-import requests
 from io import StringIO
-import seaborn as sns; sns.set()
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import requests
+import seaborn as sns;
+from scipy.stats import norm
+
+sns.set()
 import warnings
+
 warnings.filterwarnings('ignore')
-plt.rcParams['figure.figsize'] = (10,6)
+plt.rcParams['figure.figsize'] = (10, 6)
+
 
 def getDailyData(symbol):
     parameters = {'function': 'TIME_SERIES_DAILY_ADJUSTED',
@@ -25,6 +27,7 @@ def getDailyData(symbol):
     csvText = StringIO(response.text)
     data = pd.read_csv(csvText, index_col='timestamp')
     return data
+
 
 def VaR_parametric(initial_investment, conf_level):
     alpha = norm.ppf(1 - conf_level, stocks_returns_mean, port_std)
@@ -77,6 +80,7 @@ def VaR_parametric_denoised(initial_investment, conf_level):
     print('--' * 25)
     return VaR_params
 
+
 def ES_parametric(initial_investment, conf_level):
     alpha = - norm.ppf(1 - conf_level, stocks_returns_mean, port_std)
     for i, j in zip(stocks.columns, range(len(stocks.columns))):
@@ -102,6 +106,7 @@ def ES_historical(initial_investment, conf_level):
             .mean()
         print("Historical ES result for {} is {:.4f} "
               .format(i, initial_investment * ES_historical))
+
 
 if __name__ == "__main__":
     symbols = ["IBM", "MSFT", "INTC"]
@@ -129,7 +134,6 @@ cum_var = np.cumsum(np.round(pca.explained_variance_ratio_,
 print('Individually Explained Variances are:\n{}'.format(var_expl))
 print('==' * 30)
 print('Cumulative Explained Variances are: {}'.format(cum_var))
-
 
 plt.plot(pca.explained_variance_ratio_)
 plt.xlabel('Number of Components')
@@ -167,9 +171,9 @@ def myplot(score, coeff, labels=None):
 
 
 spread_measures_scaled_df = pd.DataFrame(spread_meas_scaled,
-                                                 columns=spread_meas.columns)
+                                         columns=spread_meas.columns)
 
 myplot(np.array(spread_measures_scaled_df)[:, 0:2],
-               np.transpose(pca.components_[0:2, :]),
-               list(spread_measures_scaled_df.columns))
+       np.transpose(pca.components_[0:2, :]),
+       list(spread_measures_scaled_df.columns))
 plt.show()
